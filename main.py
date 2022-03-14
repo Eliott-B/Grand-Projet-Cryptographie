@@ -24,18 +24,16 @@ Desc.pack(pady=50)
 def Code_Vigenere():
     Message = Crypt_Vigenere1.get()
     Cle = Crypt_Vigenere2.get()
-    Vig1 = tk.Label(text=crypt.Vigenere(Message,Cle).encrypt(), fg='white', bg='black', font=Desc_font)
-    Vig1.pack(pady=50)
+    Vig.config(text=crypt.Vigenere(Message,Cle).encrypt())
 
 Crypt_Vigenere1 = tk.Entry()
 Crypt_Vigenere1.pack()
 Crypt_Vigenere2 = tk.Entry()
 Crypt_Vigenere2.pack()
 bouton = tk.Button(root, text="Crypter Vigenere", command=Code_Vigenere)
-bouton.pack()
-
-Vig = tk.Label(text=crypt.Vigenere("CRYPTOGRAPHIE","MATHWEB").encrypt(), fg='white', bg='black', font=Desc_font)
-Vig.pack(pady=50)
+bouton.pack(pady=25)
+Vig = tk.Label(text="Message codé ...", fg='white', bg='black', font=Desc_font)
+Vig.pack(pady=25)
     
 
 root.mainloop()
