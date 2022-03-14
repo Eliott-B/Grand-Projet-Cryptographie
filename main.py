@@ -24,7 +24,7 @@ Desc.pack(pady=50)
 def Code_Vigenere():
     Message = Crypt_Vigenere1.get()
     Cle = Crypt_Vigenere2.get()
-    Vig.config(text=crypt.Vigenere(Message,Cle).encrypt())
+    Vig.config(text=crypt.Vigenere(Message.upper(),Cle.upper()).encrypt())
 
 Crypt_Vigenere1 = tk.Entry()
 Crypt_Vigenere1.pack()
