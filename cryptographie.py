@@ -55,9 +55,9 @@ class Vigenere:
         """Décrypte un message en Vigenère."""
         resultat = ''
         for i in range(len(self.message)) :
-            cle += cle[i]
+            self.cle += self.cle[i]
             if self.message[i] in self.ALPHABET:
-                indice = (self.position_alphabet(self.message[i]) - self.position_alphabet(cle[i]))%26
+                indice = (self.position_alphabet(self.message[i]) - self.position_alphabet(self.cle[i]))%26
                 resultat += self.ALPHABET[indice]
             else :
                 resultat = resultat + self.message[i]
