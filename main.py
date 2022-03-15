@@ -21,11 +21,10 @@ Title.pack(pady=25)
 Desc = tk.Label(text = "Cette machine vous permet de crypter et décrypter des messages !", fg='white', bg='black', font=Desc_font)
 Desc.pack(pady=50)
 
-# Redémarer la fenêtre
-def Restart():
-    global restart
-    restart = 1
-    return
+# Retour au début
+def Retour():
+    """Renvoie la fenêtre du départ."""
+    pass
 
 # Vigenere
 def Code_Vigenere():
@@ -40,7 +39,7 @@ def Code_Vigenere():
     bouton.pack(pady=25)
     reponse = tk.Label(text="Message codé en Vigenère ...", fg='white', bg='black', font=Desc_font)
     reponse.pack(pady=25)
-    retour = tk.Button(root, text="Retour à l'accueil", command=Restart)
+    retour = tk.Button(root, text="Retour à l'accueil", command=Retour)
     retour.pack(pady=25)
 
 def Encrypt_Vigenere(Crypt_Vigenere1,Crypt_Vigenere2,reponse):
