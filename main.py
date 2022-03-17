@@ -7,7 +7,7 @@ frame = tk.Frame(root)
 
 # Configuration de la fenêtre
 root.attributes('-fullscreen',True)
-root.bind('<Escape>',lambda e:root.destroy())
+root.bind('<Escape>',lambda e: Retour())
 root.title('Machine de cryptographie.')
 root.config(bg='black')
 
@@ -22,11 +22,14 @@ def Affichage():
     Title.pack(pady=25)
     Desc = tk.Label(text = "Cette machine vous permet de crypter et décrypter des messages !", fg='white', bg='black', font=Desc_font)
     Desc.pack(pady=50)
-    bt1 = tk.Button(root, text="Crypter César", command=lambda:Code_Cesar(bt1,bt2,bt3))
+    root.bind('<F1>',lambda e:Code_Cesar(bt1,bt2,bt3))
+    bt1 = tk.Button(root, text="Crypter César [F1]", command=lambda:Code_Cesar(bt1,bt2,bt3))
     bt1.pack(pady=25)
-    bt2 = tk.Button(root, text="Crypter Vigenere", command=lambda:Code_Vigenere(bt1,bt2,bt3))
+    root.bind('<F2>',lambda e:Code_Vigenere(bt1,bt2,bt3))
+    bt2 = tk.Button(root, text="Crypter Vigenere [F2]", command=lambda:Code_Vigenere(bt1,bt2,bt3))
     bt2.pack(pady=25)
-    bt3 = tk.Button(root, text="Crypter Hill", command=lambda:Code_Hill(bt1,bt2,bt3))
+    root.bind('<F3>',lambda e:Code_Hill(bt1,bt2,bt3))
+    bt3 = tk.Button(root, text="Crypter Hill [F3]", command=lambda:Code_Hill(bt1,bt2,bt3))
     bt3.pack(pady=25)
 
 # Retour au début
@@ -53,7 +56,7 @@ def Code_Cesar(bt1,bt2,bt3):
     bouton.pack(pady=25)
     reponse = tk.Label(text="Message codé en César ...", fg='white', bg='black', font=Desc_font)
     reponse.pack(pady=25)
-    retour = tk.Button(root, text="Retour à l'accueil", command=Retour)
+    retour = tk.Button(root, text="Retour à l'accueil [Esc]", command=Retour)
     retour.pack(pady=25)
     
 def Encrypt_Cesar(Entre1,Entre2,reponse):
@@ -80,7 +83,7 @@ def Code_Vigenere(bt1,bt2,bt3):
     bouton1.pack()
     reponse = tk.Label(text="Message codé en Vigenère ...", fg='white', bg='black', font=Desc_font)
     reponse.pack(pady=25)
-    retour = tk.Button(root, text="Retour à l'accueil", command=Retour)
+    retour = tk.Button(root, text="Retour à l'accueil [Esc]", command=Retour)
     retour.pack(pady=25)
 
 def Encrypt_Vigenere(Entre1,Entre2,reponse):
@@ -120,7 +123,7 @@ def Code_Hill(bt1,bt2,bt3):
     bouton.pack(pady=25)
     reponse = tk.Label(text="Message codé en Hill ...", fg='white', bg='black', font=Desc_font)
     reponse.pack(pady=25)
-    retour = tk.Button(root, text="Retour à l'accueil", command=Retour)
+    retour = tk.Button(root, text="Retour à l'accueil [Esc]", command=Retour)
     retour.pack(pady=25)
 
 def Encrypt_Hill(Entre1,Entre2,Entre3,Entre4,Entre5,reponse):
