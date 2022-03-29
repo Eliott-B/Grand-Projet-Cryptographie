@@ -1,4 +1,12 @@
+import csv
 from math import gcd
+
+try:
+    with open('morse.csv', 'r') as inp:
+        reader = csv.reader(inp)
+        dict_csv = {rows[0]:rows[1] for rows in reader}
+except IOError:
+    print("I/O error")
 
 
 class Cesar:
@@ -82,6 +90,25 @@ class Hill:
         mat_resultat.append((A[1][0]*B[0] + A[1][1]*B[1])%26)
         return mat_resultat
 
+    def verif_matrice_cle(self):
+        a = self.matrice_cle[0][0]
+        b = self.matrice_cle[0][1]
+        c = self.matrice_cle[1][0]
+        d = self.matrice_cle[1][1]
+        determinant = a*d-b*c
+        if type(a)!=int or type(b)!=int or type(c)!=int or type(d)!=int or a<0 or b<0 or c<0 or d<0:
+            raise TypeError("La matrice clé ne peut être composée que d'entiers positifs")
+        if gcd(determinant,26)!=1:
+            raise Exception("Le déterminant de la matrice n'est pas premier avec 26 : essayez avec d'autres coefficients")
+        inverse_det = None
+        for i in range(1,26,2):
+            if (determinant*i)%26 == 1:
+                inverse_det = i
+        if inverse_det == None:
+            raise Exception("Cette matrice ne peut pas être inversée : essayez avec d'autres coefficients")
+        return(inverse_det)
+
+  
     def encrypt(self)->str:
         """Crypte un message en Hill."""
         matrice_message=[]
@@ -98,3 +125,81 @@ class Hill:
             for elt in mat:
                 resultat += self.ALPHABET[elt]
         return resultat
+
+    def decrypt(self)->str:
+        """Décrypte un message chiffré en Hill."""
+        inverse_det = self.verif_matrice_cle()
+        a = (self.matrice_cle[1][1] * inverse_det)%26
+        b = (-self.matrice_cle[0][1] * inverse_det)%26
+        c = (-self.matrice_cle[1][0] * inverse_det)%26
+        d = (self.matrice_cle[0][0] * inverse_det)%26
+        matrice_decrypt = [[a,b],[c,d]]
+        return(Hill(self.message,matrice_decrypt).encrypt())
+
+
+class Morse:
+    
+    def __init__(self,message:str):
+        self.message = message #str
+        
+    def encrypt(self)->str:
+        """Crypte un message en Morse."""
+        resultat = ""
+        for elt in self.message:
+            if elt == " ":
+                resultat += "/ "
+            for cle in dict_csv.keys():
+                if elt == cle:
+                    resultat += dict_csv[cle] + " "
+        return resultat
+                
+    def decrypt(self)->str:
+        """Decrypte un message en Morse."""
+        tmp = ""
+        resultat = ""
+        for elt in self.message:
+            if elt != " ":
+                tmp += elt
+            elif elt == " ":
+                if tmp == "/":
+                    resultat += " "
+                    tmp = ""
+                for cle in dict_csv.keys():
+                    if tmp == dict_csv[cle]:
+                        resultat += cle
+                        tmp = ""
+                if tmp != "":
+                    return "Ceci n'est pas du morse !"
+        return resultat
+
+
+class XOR:
+    
+    def __init__(self,message,cle:str):
+        self.message = message #str or list
+        self.cle = cle #str
+    
+    def encrypt(self)->list:
+        """Crypte un message en XOR."""
+        c = []
+        n = len(self.message)
+        m = len(self.cle)
+        j = 0
+        for i in range(n):
+            c.append(ord(self.message[i]) ^ ord(self.cle[j]))
+            j = (j+1)%m
+        return c
+
+    def decrypt(self)->list:
+        """Decrypte un message en XOR."""
+        c = []
+        n = len(self.message)
+        m = len(self.cle)
+        j = 0
+        for i in range(n):
+            c.append(self.message[i] ^ ord(self.cle[j]))
+            j = (j+1)%m
+        code = ""
+        for elt in c:
+            code += chr(elt)
+        return code
