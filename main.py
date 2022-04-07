@@ -62,6 +62,7 @@ def Reset():
     root.unbind('<F4>')
     Affichage()
 
+
 # =============================================================================
 # Cesar
 # =============================================================================
@@ -98,6 +99,7 @@ def Decrypt_Cesar(Entre1,Entre2,reponse):
     Cle = int(Entre2.get())
     reponse.config(text=crypt.Cesar(Message.upper(),Cle).decrypt())
 
+
 # =============================================================================
 # Vigenere
 # =============================================================================
@@ -133,6 +135,7 @@ def Decrypt_Vigenere(Entre1,Entre2,reponse):
     Message = Entre1.get()
     Cle = Entre2.get()
     reponse.config(text=crypt.Vigenere(Message.upper(),Cle.upper()).decrypt())
+
 
 # =============================================================================
 # Hill
@@ -178,6 +181,11 @@ def Decrypt_Hill(Entre1,Entre2,Entre3,Entre4,Entre5,reponse):
     Message = Entre1.get()
     Cle = [[int(Entre2.get()),int(Entre3.get())],[int(Entre4.get()),int(Entre5.get())]]
     reponse.config(text=crypt.Hill(Message.upper(),Cle).decrypt())
+    
+def Generateur_Matrice():
+    """Génère une matrice aléatoirement."""
+    matrice = {[]}
+
 
 # =============================================================================
 # MORSE
@@ -209,6 +217,7 @@ def Decrypt_Morse(Entre1,reponse):
     """Appelle la fonction Decrypt de Morse."""
     Message = Entre1.get() + " "
     reponse.config(text=crypt.Morse(Message).decrypt())
+
     
 # =============================================================================
 # XOR

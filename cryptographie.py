@@ -1,6 +1,7 @@
 import csv
 from math import gcd
 
+# Ouvre le fichier morse.csv en lecture.
 try:
     with open('morse.csv', 'r') as inp:
         reader = csv.reader(inp)
@@ -111,6 +112,7 @@ class Hill:
   
     def encrypt(self)->str:
         """Crypte un message en Hill."""
+        self.message.replace(" ","")
         matrice_message=[]
         tab1=[]
         tab2=[]
@@ -128,6 +130,7 @@ class Hill:
 
     def decrypt(self)->str:
         """Décrypte un message chiffré en Hill."""
+        self.message.replace(" ","")
         inverse_det = self.verif_matrice_cle()
         a = (self.matrice_cle[1][1] * inverse_det)%26
         b = (-self.matrice_cle[0][1] * inverse_det)%26
