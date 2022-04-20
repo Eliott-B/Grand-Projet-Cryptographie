@@ -1,7 +1,6 @@
 import tkinter as tk
 import tkinter.font as tkFont
 import cryptographie as crypt
-import ast
 
 root = tk.Tk() # Création de la fenêtre
 frame = tk.Frame(root)
@@ -9,37 +8,37 @@ frame = tk.Frame(root)
 # Configuration de la fenêtre
 root.attributes('-fullscreen',True)
 root.bind('<Escape>',lambda e: Retour())
-root.title('Machine de cryptographie.')
+root.title('Machine de cryptographie')
 root.config(bg='black')
 
-# Police d'écriture
+# Polices d'écriture
 Title_font = tkFont.Font(family='Helvetica', size=36, weight='bold')
 Desc_font = tkFont.Font(family='Helvetica', size=18)
 
 # Affichage
 def Affichage():
     """Affiche le titre et la description de la fenêtre."""
-    Title = tk.Label(text = "Machine de cryptographie.", fg='white', bg='black', font=Title_font)
-    Title.pack(pady=25)
+    Title = tk.Label(text = "Machine de cryptographie", fg='white', bg='black', font=Title_font)
+    Title.pack(pady=40)
     Desc = tk.Label(text = "Cette machine vous permet de crypter et décrypter des messages !", fg='white', bg='black', font=Desc_font)
     Desc.pack(pady=50)
 
 def Bouton():
     """Affiche les boutons d'accueil."""
     root.bind('<F1>',lambda e:Code_Cesar())
-    bt1 = tk.Button(root, text="Crypter César [F1]", command=lambda:Code_Cesar())
+    bt1 = tk.Button(root, text="Code de César [F1]", command=lambda:Code_Cesar())
     bt1.pack(pady=25)
     root.bind('<F2>',lambda e:Code_Vigenere())
-    bt2 = tk.Button(root, text="Crypter Vigenere [F2]", command=lambda:Code_Vigenere())
+    bt2 = tk.Button(root, text="Code Vigenère [F2]", command=lambda:Code_Vigenere())
     bt2.pack(pady=25)
     root.bind('<F3>',lambda e:Code_Hill())
-    bt3 = tk.Button(root, text="Crypter Hill [F3]", command=lambda:Code_Hill())
+    bt3 = tk.Button(root, text="Chiffre de Hill [F3]", command=lambda:Code_Hill())
     bt3.pack(pady=25)
     root.bind('<F4>',lambda e:Code_Morse())
-    bt4 = tk.Button(root, text="Crypter Morse [F4]", command=lambda:Code_Morse())
+    bt4 = tk.Button(root, text="Alphabet Morse [F4]", command=lambda:Code_Morse())
     bt4.pack(pady=25)
     root.bind('<F5>',lambda e:Code_XOR())
-    bt5 = tk.Button(root, text="Crypter XOR [F5]", command=lambda:Code_XOR())
+    bt5 = tk.Button(root, text="Cryptage XOR [F5]", command=lambda:Code_XOR())
     bt5.pack(pady=25)
 
 # Retour
@@ -49,6 +48,7 @@ def Retour():
         widget.destroy()
     root.unbind('<F1>')
     root.unbind('<F2>')
+    root.unbind('<F3>')
     Affichage()
     Bouton()
     
@@ -62,7 +62,6 @@ def Reset():
     root.unbind('<F4>')
     Affichage()
 
-
 # =============================================================================
 # Cesar
 # =============================================================================
@@ -70,19 +69,19 @@ def Reset():
 def Code_Cesar():
     """Affiche la fenêtre du Cesar."""
     Reset()
-    Entre1 = tk.Entry()
-    Entre1.insert(0,"Votre message")
+    Entre1 = tk.Entry(width=50)
+    Entre1.insert(0,"Votre message ...")
     Entre1.pack()
-    Entre2 = tk.Entry()
-    Entre2.insert(0,"Votre décalage clé")
+    Entre2 = tk.Entry(width=50)
+    Entre2.insert(0,"Votre décalage clé ...")
     Entre2.pack()  
     root.bind('<F1>',lambda e:Encrypt_Cesar(Entre1,Entre2,reponse))
     root.bind('<F2>',lambda e:Decrypt_Cesar(Entre1,Entre2,reponse))
     bouton = tk.Button(root, text="Crypter [F1]", command=lambda:Encrypt_Cesar(Entre1,Entre2,reponse))
     bouton.pack(pady=25)
-    bouton1 = tk.Button(root, text="Decrypter [F2]", command=lambda:Decrypt_Cesar(Entre1,Entre2,reponse))
+    bouton1 = tk.Button(root, text="Décrypter [F2]", command=lambda:Decrypt_Cesar(Entre1,Entre2,reponse))
     bouton1.pack()
-    reponse = tk.Label(text="Message codé en César ...", fg='white', bg='black', font=Desc_font)
+    reponse = tk.Label(text="Message codé en César...", fg='yellow', bg='black', font=Desc_font)
     reponse.pack(pady=25)
     retour = tk.Button(root, text="Retour à l'accueil [Esc]", command=Retour)
     retour.pack(pady=25)
@@ -99,7 +98,6 @@ def Decrypt_Cesar(Entre1,Entre2,reponse):
     Cle = int(Entre2.get())
     reponse.config(text=crypt.Cesar(Message.upper(),Cle).decrypt())
 
-
 # =============================================================================
 # Vigenere
 # =============================================================================
@@ -107,11 +105,11 @@ def Decrypt_Cesar(Entre1,Entre2,reponse):
 def Code_Vigenere():
     """Affiche la fenêtre du Vigenere."""
     Reset()
-    Entre1 = tk.Entry()
-    Entre1.insert(0,"Votre message")
+    Entre1 = tk.Entry(width=50)
+    Entre1.insert(0,"Votre message ...")
     Entre1.pack()
-    Entre2 = tk.Entry()
-    Entre2.insert(0,"Votre message clé")
+    Entre2 = tk.Entry(width=50)
+    Entre2.insert(0,"Votre message clé ...")
     Entre2.pack()
     root.bind('<F1>',lambda e:Encrypt_Vigenere(Entre1,Entre2,reponse))
     root.bind('<F2>',lambda e:Decrypt_Vigenere(Entre1,Entre2,reponse))
@@ -119,7 +117,7 @@ def Code_Vigenere():
     bouton.pack(pady=25)
     bouton1 = tk.Button(root, text="Décrypter [F2]", command=lambda:Decrypt_Vigenere(Entre1,Entre2,reponse))
     bouton1.pack()
-    reponse = tk.Label(text="Message codé en Vigenère ...", fg='white', bg='black', font=Desc_font)
+    reponse = tk.Label(text="Message codé en Vigenère...", fg='yellow', bg='black', font=Desc_font)
     reponse.pack(pady=25)
     retour = tk.Button(root, text="Retour à l'accueil [Esc]", command=Retour)
     retour.pack(pady=25)
@@ -136,7 +134,6 @@ def Decrypt_Vigenere(Entre1,Entre2,reponse):
     Cle = Entre2.get()
     reponse.config(text=crypt.Vigenere(Message.upper(),Cle.upper()).decrypt())
 
-
 # =============================================================================
 # Hill
 # =============================================================================
@@ -144,28 +141,28 @@ def Decrypt_Vigenere(Entre1,Entre2,reponse):
 def Code_Hill():
     """Affiche la fenêtre du Hill."""
     Reset()
-    Entre1 = tk.Entry()
-    Entre1.insert(0,"Votre message")
-    Entre1.pack()
-    Matrice = tk.Label(text = "Votre matrice :", fg='white', bg='black', font=Desc_font)
-    Matrice.pack()
+    Entre1 = tk.Entry(width=50)
+    Entre1.insert(0,"Votre message ...")
+    Entre1.pack(pady=10)
+    Matrice = tk.Label(text = "Votre matrice clé :", fg='white', bg='black', font=Desc_font)
+    Matrice.pack(padx=10, pady=5)
     zone = tk.Frame(root,bg='black')
     zone.pack(padx=10,pady=10)
-    Entre2 = tk.Entry(zone, width=5)
-    Entre2.grid(row=0,column=0,padx=10)
-    Entre3 = tk.Entry(zone, width=5)
-    Entre3.grid(row=0,column=1,padx=10)
-    Entre4 = tk.Entry(zone, width=5)
+    Entre2 = tk.Entry(zone, width=5, justify='center')
+    Entre2.grid(row=0,column=0,padx=10,pady=10)
+    Entre3 = tk.Entry(zone, width=5, justify='center')
+    Entre3.grid(row=0,column=1,padx=10,pady=10)
+    Entre4 = tk.Entry(zone, width=5, justify='center')
     Entre4.grid(row=1,column=0,padx=10,pady=10)
-    Entre5 = tk.Entry(zone, width=5)
+    Entre5 = tk.Entry(zone, width=5, justify='center')
     Entre5.grid(row=1,column=1,padx=10,pady=10)
     root.bind('<F1>',lambda e:Encrypt_Hill(Entre1,Entre2,Entre3,Entre4,Entre5,reponse))
     root.bind('<F2>',lambda e:Decrypt_Hill(Entre1,Entre2,Entre3,Entre4,Entre5,reponse))
     bouton = tk.Button(root, text="Crypter [F1]", command=lambda:Encrypt_Hill(Entre1,Entre2,Entre3,Entre4,Entre5,reponse))
     bouton.pack(pady=25)
-    bouton1 = tk.Button(root, text="Decrypter [F2]", command=lambda:Decrypt_Hill(Entre1,Entre2,Entre3,Entre4,Entre5,reponse))
+    bouton1 = tk.Button(root, text="Décrypter [F2]", command=lambda:Decrypt_Hill(Entre1,Entre2,Entre3,Entre4,Entre5,reponse))
     bouton1.pack()
-    reponse = tk.Label(text="Message codé en Hill ...", fg='white', bg='black', font=Desc_font)
+    reponse = tk.Label(text="Message codé en Hill...", fg='yellow', bg='black', font=Desc_font)
     reponse.pack(pady=25)
     retour = tk.Button(root, text="Retour à l'accueil [Esc]", command=Retour)
     retour.pack(pady=25)
@@ -181,11 +178,6 @@ def Decrypt_Hill(Entre1,Entre2,Entre3,Entre4,Entre5,reponse):
     Message = Entre1.get()
     Cle = [[int(Entre2.get()),int(Entre3.get())],[int(Entre4.get()),int(Entre5.get())]]
     reponse.config(text=crypt.Hill(Message.upper(),Cle).decrypt())
-    
-def Generateur_Matrice():
-    """Génère une matrice aléatoirement."""
-    matrice = {[]}
-
 
 # =============================================================================
 # MORSE
@@ -194,16 +186,19 @@ def Generateur_Matrice():
 def Code_Morse():
     """Affiche la fenêtre du Morse."""
     Reset()
-    Entre1 = tk.Entry()
-    Entre1.insert(0,"Votre message")
+    Entre1 = tk.Entry(width=50)
+    Entre1.insert(0,"Votre message ...")
     Entre1.pack() 
     root.bind('<F1>',lambda e:Encrypt_Morse(Entre1,reponse))
     root.bind('<F2>',lambda e:Decrypt_Morse(Entre1,reponse))
+    root.bind('<F3>',lambda e:Read_Morse(Entre1,reponse))
     bouton = tk.Button(root, text="Crypter [F1]", command=lambda:Encrypt_Morse(Entre1,reponse))
-    bouton.pack(pady=25)
-    bouton1 = tk.Button(root, text="Decrypter [F2]", command=lambda:Decrypt_Morse(Entre1,reponse))
-    bouton1.pack()
-    reponse = tk.Label(text="Message codé en Morse ...", fg='white', bg='black', font=Desc_font)
+    bouton.pack(pady=10)
+    bouton1 = tk.Button(root, text="Décrypter [F2]", command=lambda:Decrypt_Morse(Entre1,reponse))
+    bouton1.pack(pady=10)
+    bouton2 = tk.Button(root, text="Lire [F3]", command=lambda:Read_Morse(Entre1,reponse))
+    bouton2.pack(pady=10)
+    reponse = tk.Label(text='Message "codé" en Morse...', fg='yellow', bg='black', font=Desc_font)
     reponse.pack(pady=25)
     retour = tk.Button(root, text="Retour à l'accueil [Esc]", command=Retour)
     retour.pack(pady=25)
@@ -217,7 +212,11 @@ def Decrypt_Morse(Entre1,reponse):
     """Appelle la fonction Decrypt de Morse."""
     Message = Entre1.get() + " "
     reponse.config(text=crypt.Morse(Message).decrypt())
-
+    
+def Read_Morse(Entre1,reponse):
+    """Appelle la fonction Play_sound de Morse."""
+    Message = Entre1.get() + " "
+    reponse.config(text=crypt.Morse(Message).Play_sound())
     
 # =============================================================================
 # XOR
@@ -226,11 +225,11 @@ def Decrypt_Morse(Entre1,reponse):
 def Code_XOR():
     """Affiche la fenêtre du XOR."""
     Reset()
-    Entre1 = tk.Entry()
-    Entre1.insert(0,"Votre message")
+    Entre1 = tk.Entry(width=50)
+    Entre1.insert(0,"Votre message ...")
     Entre1.pack()
-    Entre2 = tk.Entry()
-    Entre2.insert(0,"Votre message clé")
+    Entre2 = tk.Entry(width=50)
+    Entre2.insert(0,"Votre message clé ...")
     Entre2.pack()
     root.bind('<F1>',lambda e:Encrypt_XOR(Entre1,Entre2,reponse))
     root.bind('<F2>',lambda e:Decrypt_XOR(Entre1,Entre2,reponse))
@@ -238,7 +237,7 @@ def Code_XOR():
     bouton.pack(pady=25)
     bouton1 = tk.Button(root, text="Décrypter [F2]", command=lambda:Decrypt_XOR(Entre1,Entre2,reponse))
     bouton1.pack()
-    reponse = tk.Label(text="Message codé en XOR ...", fg='white', bg='black', font=Desc_font)
+    reponse = tk.Label(text="Message codé en XOR ...", fg='yellow', bg='black', font=Desc_font)
     reponse.pack(pady=25)
     retour = tk.Button(root, text="Retour à l'accueil [Esc]", command=Retour)
     retour.pack(pady=25)
@@ -253,7 +252,7 @@ def Decrypt_XOR(Entre1,Entre2,reponse):
     """Appelle la fonction Decrypt de XOR."""
     Message = Entre1.get()
     Cle = Entre2.get()
-    reponse.config(text=crypt.XOR(ast.literal_eval(Message),Cle.upper()).decrypt())
+    reponse.config(text=crypt.XOR(Message,Cle.upper()).decrypt())
 
 
 # Lancement de la fenêtre

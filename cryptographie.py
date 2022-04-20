@@ -1,5 +1,7 @@
 import csv
 from math import gcd
+# from playsound import playsound
+from time import sleep
 
 # Ouvre le fichier morse.csv en lecture.
 try:
@@ -7,7 +9,7 @@ try:
         reader = csv.reader(inp)
         dict_csv = {rows[0]:rows[1] for rows in reader}
 except IOError:
-    print("I/O error")
+    print("Impossible d'ouvrir le fichier morse.csv")
 
 
 class Cesar:
@@ -34,7 +36,7 @@ class Cesar:
 
     def decrypt(self)->str:
         """Décrypte un message en César."""
-        return(self.encrypt(self.message, 26-self.decalage))
+        return(Cesar(self.message, 26-self.decalage).encrypt())
 
 
 class Vigenere:
@@ -98,25 +100,33 @@ class Hill:
         d = self.matrice_cle[1][1]
         determinant = a*d-b*c
         if type(a)!=int or type(b)!=int or type(c)!=int or type(d)!=int or a<0 or b<0 or c<0 or d<0:
-            raise TypeError("La matrice clé ne peut être composée que d'entiers positifs")
+            #raise ValueError("La matrice clé ne peut être composée que d'entiers positifs")
+            return False
         if gcd(determinant,26)!=1:
-            raise Exception("Le déterminant de la matrice n'est pas premier avec 26 : essayez avec d'autres coefficients")
+            #raise Exception("Le déterminant de la matrice n'est pas premier avec 26 : essayez avec d'autres coefficients")
+            return False
         inverse_det = None
         for i in range(1,26,2):
             if (determinant*i)%26 == 1:
                 inverse_det = i
         if inverse_det == None:
-            raise Exception("Cette matrice ne peut pas être inversée : essayez avec d'autres coefficients")
+            #raise Exception("Cette matrice ne peut pas être inversée : essayez avec d'autres coefficients")
+            return False
         return(inverse_det)
 
   
     def encrypt(self)->str:
         """Crypte un message en Hill."""
+        if self.verif_matrice_cle()==False:
+            return("Matrice invalide")
         self.message.replace(" ","")
         matrice_message=[]
         tab1=[]
         tab2=[]
         resultat=''
+        if len(self.message)%2 != 0:
+            self.message += "A"
+            
         for lettre in self.message:
             matrice_message.append(self.position_alphabet(lettre))
         for i in range(0,len(matrice_message),2):
@@ -130,6 +140,8 @@ class Hill:
 
     def decrypt(self)->str:
         """Décrypte un message chiffré en Hill."""
+        if self.verif_matrice_cle()==False:
+            return("Matrice invalide")
         self.message.replace(" ","")
         inverse_det = self.verif_matrice_cle()
         a = (self.matrice_cle[1][1] * inverse_det)%26
@@ -174,6 +186,20 @@ class Morse:
                 if tmp != "":
                     return "Ceci n'est pas du morse !"
         return resultat
+    
+    def Play_sound(self):
+        """Lit le message en Morse."""
+        if self.decrypt() == "Ceci n'est pas du morse !":
+            return("Ceci n'est pas du morse !")
+        for elt in self.message:
+            if elt == ".":
+                # playsound('sound/court.wav')
+                pass
+            elif elt == "-":
+                # playsound('sound/long.wav')
+                pass
+            elif elt == " " or elt == "/":
+                sleep(1)
 
 
 class XOR:
@@ -195,12 +221,13 @@ class XOR:
 
     def decrypt(self)->list:
         """Decrypte un message en XOR."""
+        liste = [int(e) for e in self.message.split(' ')] # Transforme le message (str) en liste.
         c = []
-        n = len(self.message)
+        n = len(liste)
         m = len(self.cle)
         j = 0
         for i in range(n):
-            c.append(self.message[i] ^ ord(self.cle[j]))
+            c.append(liste[i] ^ ord(self.cle[j]))
             j = (j+1)%m
         code = ""
         for elt in c:
