@@ -1,15 +1,6 @@
-import csv
 from math import gcd
-# from playsound import playsound
+import simpleaudio as sa
 from time import sleep
-
-# Ouvre le fichier morse.csv en lecture.
-try:
-    with open('morse.csv', 'r') as inp:
-        reader = csv.reader(inp)
-        dict_csv = {rows[0]:rows[1] for rows in reader}
-except IOError:
-    print("Impossible d'ouvrir le fichier morse.csv")
 
 
 class Cesar:
@@ -113,7 +104,6 @@ class Hill:
             #raise Exception("Cette matrice ne peut pas être inversée : essayez avec d'autres coefficients")
             return False
         return(inverse_det)
-
   
     def encrypt(self)->str:
         """Crypte un message en Hill."""
@@ -156,6 +146,9 @@ class Morse:
     
     def __init__(self,message:str):
         self.message = message #str
+        self.alphabet = {"A":".-","B":"-...","C":"-.-.","D":"-..","E":".","F":"..-.","G":"--.","H":"....","I":"..","J":".---","K":"-.-","L":".-..","M":"--","N":"-.","O":"---","P":".--.","Q":"--.-","R":".-.","S":"...","T":"-","U":"..-","V":"...-","W":".--","X":"-..-","Y":"-.--","Z":"--..","1":".----","2":"..---","3":"...--","4":"....-","5":".....","6":"-....","7":"--...","8":"---..","9":"----.","0":"-----"}
+        self.court = sa.WaveObject.from_wave_file("sound/court.wav")
+        self.long = sa.WaveObject.from_wave_file("sound/long.wav")
         
     def encrypt(self)->str:
         """Crypte un message en Morse."""
@@ -163,9 +156,9 @@ class Morse:
         for elt in self.message:
             if elt == " ":
                 resultat += "/ "
-            for cle in dict_csv.keys():
+            for cle in self.alphabet.keys():
                 if elt == cle:
-                    resultat += dict_csv[cle] + " "
+                    resultat += self.alphabet[cle] + " "
         return resultat
                 
     def decrypt(self)->str:
@@ -179,8 +172,8 @@ class Morse:
                 if tmp == "/":
                     resultat += " "
                     tmp = ""
-                for cle in dict_csv.keys():
-                    if tmp == dict_csv[cle]:
+                for cle in self.alphabet.keys():
+                    if tmp == self.alphabet[cle]:
                         resultat += cle
                         tmp = ""
                 if tmp != "":
@@ -193,11 +186,11 @@ class Morse:
             return("Ceci n'est pas du morse !")
         for elt in self.message:
             if elt == ".":
-                # playsound('sound/court.wav')
-                pass
+                court = self.court.play()
+                court.wait_done()
             elif elt == "-":
-                # playsound('sound/long.wav')
-                pass
+                long = self.long.play()
+                long.wait_done()
             elif elt == " " or elt == "/":
                 sleep(1)
 

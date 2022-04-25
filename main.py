@@ -16,15 +16,15 @@ Title_font = tkFont.Font(family='Helvetica', size=36, weight='bold')
 Desc_font = tkFont.Font(family='Helvetica', size=18)
 
 # Affichage
-def Affichage():
-    """Affiche le titre et la description de la fenêtre."""
+def General():
+    """Affiche les éléments généraux de la fenêtre."""
     Title = tk.Label(text = "Machine de cryptographie", fg='white', bg='black', font=Title_font)
     Title.pack(pady=40)
-    Desc = tk.Label(text = "Cette machine vous permet de crypter et décrypter des messages !", fg='white', bg='black', font=Desc_font)
-    Desc.pack(pady=50)
 
-def Bouton():
-    """Affiche les boutons d'accueil."""
+def Accueil():
+    """Affiche les boutons d'accueil et la description."""
+    desc = tk.Label(text = "Cette machine vous permet de crypter et décrypter des messages !", fg='white', bg='black', font=Desc_font)
+    desc.pack(pady=50)
     root.bind('<F1>',lambda e:Code_Cesar())
     bt1 = tk.Button(root, text="Code de César [F1]", command=lambda:Code_Cesar())
     bt1.pack(pady=25)
@@ -49,8 +49,8 @@ def Retour():
     root.unbind('<F1>')
     root.unbind('<F2>')
     root.unbind('<F3>')
-    Affichage()
-    Bouton()
+    General()
+    Accueil()
     
 def Reset():
     """Renvoie la fenêtre de base."""
@@ -60,7 +60,8 @@ def Reset():
     root.unbind('<F2>')
     root.unbind('<F3>')
     root.unbind('<F4>')
-    Affichage()
+    root.unbind('<F5>')
+    General()
 
 # =============================================================================
 # Cesar
@@ -69,6 +70,9 @@ def Reset():
 def Code_Cesar():
     """Affiche la fenêtre du Cesar."""
     Reset()
+    desc = tk.Label(text = "Le Code César est un chiffrement qui décale chaque lettre du message par le décalage donné.\n"
+                    "La clé de décalage doit être comprise entre 1 et 25.", fg='white', bg='black', font=Desc_font)
+    desc.pack(pady=30)
     Entre1 = tk.Entry(width=50)
     Entre1.insert(0,"Votre message ...")
     Entre1.pack()
@@ -103,8 +107,11 @@ def Decrypt_Cesar(Entre1,Entre2,reponse):
 # =============================================================================
 
 def Code_Vigenere():
-    """Affiche la fenêtre du Vigenere."""
+    """Affiche la fenêtre du Vigenère."""
     Reset()
+    desc = tk.Label(text = "Le Code Vigenère est un chiffrement qui décale chaque lettre du message grâce au message clé.\n"
+                    "Le message clé ne doit pas être constitué de chiffres ou de caractères spéciaux.", fg='white', bg='black', font=Desc_font)
+    desc.pack(pady=30)
     Entre1 = tk.Entry(width=50)
     Entre1.insert(0,"Votre message ...")
     Entre1.pack()
@@ -141,6 +148,10 @@ def Decrypt_Vigenere(Entre1,Entre2,reponse):
 def Code_Hill():
     """Affiche la fenêtre du Hill."""
     Reset()
+    desc = tk.Label(text = "Le Chiffre de Hill est un chiffrement qui chiffre un message grâce à une matrice clé.\n"
+                    "La matrice clé doit être composé d'entier positif.\n"
+                    "Son déterminant doit être premier avec 26 et doit permettre d'obtenir une matrice inversible.", fg='white', bg='black', font=Desc_font)
+    desc.pack(pady=30)
     Entre1 = tk.Entry(width=50)
     Entre1.insert(0,"Votre message ...")
     Entre1.pack(pady=10)
@@ -186,6 +197,9 @@ def Decrypt_Hill(Entre1,Entre2,Entre3,Entre4,Entre5,reponse):
 def Code_Morse():
     """Affiche la fenêtre du Morse."""
     Reset()
+    desc = tk.Label(text = "L'alphabet Morse transcrit un message en signaux court ou long.\n"
+                    "Signal court : .\nSignal long : -\nLes lettres sont séparées par des espaces et les mots par un slash.", fg='white', bg='black', font=Desc_font)
+    desc.pack(pady=30)
     Entre1 = tk.Entry(width=50)
     Entre1.insert(0,"Votre message ...")
     Entre1.pack() 
@@ -225,6 +239,8 @@ def Read_Morse(Entre1,reponse):
 def Code_XOR():
     """Affiche la fenêtre du XOR."""
     Reset()
+    desc = tk.Label(text = "Le cryptage XOR est un chiffrement qui fait un OUX entre le message et le message clé.", fg='white', bg='black', font=Desc_font)
+    desc.pack(pady=30)
     Entre1 = tk.Entry(width=50)
     Entre1.insert(0,"Votre message ...")
     Entre1.pack()
