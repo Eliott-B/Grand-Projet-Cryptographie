@@ -1,6 +1,4 @@
 from math import gcd
-import simpleaudio as sa
-from time import sleep
 
 
 class Cesar:
@@ -91,17 +89,14 @@ class Hill:
         d = self.matrice_cle[1][1]
         determinant = a*d-b*c
         if type(a)!=int or type(b)!=int or type(c)!=int or type(d)!=int or a<0 or b<0 or c<0 or d<0:
-            #raise ValueError("La matrice clé ne peut être composée que d'entiers positifs")
             return False
         if gcd(determinant,26)!=1:
-            #raise Exception("Le déterminant de la matrice n'est pas premier avec 26 : essayez avec d'autres coefficients")
             return False
         inverse_det = None
         for i in range(1,26,2):
             if (determinant*i)%26 == 1:
                 inverse_det = i
         if inverse_det == None:
-            #raise Exception("Cette matrice ne peut pas être inversée : essayez avec d'autres coefficients")
             return False
         return(inverse_det)
   
@@ -147,8 +142,6 @@ class Morse:
     def __init__(self,message:str):
         self.message = message #str
         self.alphabet = {"A":".-","B":"-...","C":"-.-.","D":"-..","E":".","F":"..-.","G":"--.","H":"....","I":"..","J":".---","K":"-.-","L":".-..","M":"--","N":"-.","O":"---","P":".--.","Q":"--.-","R":".-.","S":"...","T":"-","U":"..-","V":"...-","W":".--","X":"-..-","Y":"-.--","Z":"--..","1":".----","2":"..---","3":"...--","4":"....-","5":".....","6":"-....","7":"--...","8":"---..","9":"----.","0":"-----"}
-        self.court = sa.WaveObject.from_wave_file("sound/court.wav")
-        self.long = sa.WaveObject.from_wave_file("sound/long.wav")
         
     def encrypt(self)->str:
         """Crypte un message en Morse."""
@@ -180,20 +173,6 @@ class Morse:
                     return "Ceci n'est pas du morse !"
         return resultat
     
-    def Play_sound(self):
-        """Lit le message en Morse."""
-        if self.decrypt() == "Ceci n'est pas du morse !":
-            return("Ceci n'est pas du morse !")
-        for elt in self.message:
-            if elt == ".":
-                court = self.court.play()
-                court.wait_done()
-            elif elt == "-":
-                long = self.long.play()
-                long.wait_done()
-            elif elt == " " or elt == "/":
-                sleep(1)
-
 
 class XOR:
     

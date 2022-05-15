@@ -48,7 +48,6 @@ def Retour():
         widget.destroy()
     root.unbind('<F1>')
     root.unbind('<F2>')
-    root.unbind('<F3>')
     General()
     Accueil()
     
@@ -205,13 +204,10 @@ def Code_Morse():
     Entre1.pack() 
     root.bind('<F1>',lambda e:Encrypt_Morse(Entre1,reponse))
     root.bind('<F2>',lambda e:Decrypt_Morse(Entre1,reponse))
-    root.bind('<F3>',lambda e:Read_Morse(Entre1,reponse))
     bouton = tk.Button(root, text="Crypter [F1]", command=lambda:Encrypt_Morse(Entre1,reponse))
     bouton.pack(pady=10)
     bouton1 = tk.Button(root, text="Décrypter [F2]", command=lambda:Decrypt_Morse(Entre1,reponse))
     bouton1.pack(pady=10)
-    bouton2 = tk.Button(root, text="Lire [F3]", command=lambda:Read_Morse(Entre1,reponse))
-    bouton2.pack(pady=10)
     reponse = tk.Label(text='Message "codé" en Morse...', fg='yellow', bg='black', font=Desc_font)
     reponse.pack(pady=25)
     retour = tk.Button(root, text="Retour à l'accueil [Esc]", command=Retour)
@@ -226,11 +222,6 @@ def Decrypt_Morse(Entre1,reponse):
     """Appelle la fonction Decrypt de Morse."""
     Message = Entre1.get() + " "
     reponse.config(text=crypt.Morse(Message).decrypt())
-    
-def Read_Morse(Entre1,reponse):
-    """Appelle la fonction Play_sound de Morse."""
-    Message = Entre1.get() + " "
-    reponse.config(text=crypt.Morse(Message).Play_sound())
     
 # =============================================================================
 # XOR
