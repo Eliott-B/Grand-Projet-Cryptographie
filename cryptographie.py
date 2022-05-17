@@ -41,24 +41,34 @@ class Vigenere:
 
     def encrypt(self)->str:
         """Crypte un message en Vigenère."""
+        for elt in self.cle:
+            if elt not in self.ALPHABET:
+                return ("Clé invalide")
         resultat = ''  
+        cpt = 0
         for i in range(len(self.message)) :
             self.cle += self.cle[i]
             if self.message[i] in self.ALPHABET:
-                indice = ( self.position_alphabet(self.message[i]) + self.position_alphabet(self.cle[i]))%26
+                indice = (self.position_alphabet(self.message[i]) + self.position_alphabet(self.cle[cpt]))%26
                 resultat += self.ALPHABET[indice]
+                cpt += 1
             else :
                 resultat = resultat + self.message[i]
         return resultat
 
     def decrypt(self)->str:
         """Décrypte un message en Vigenère."""
+        for elt in self.cle:
+            if elt not in self.ALPHABET:
+                return ("Clé invalide")
         resultat = ''
+        cpt = 0
         for i in range(len(self.message)) :
             self.cle += self.cle[i]
             if self.message[i] in self.ALPHABET:
-                indice = (self.position_alphabet(self.message[i]) - self.position_alphabet(self.cle[i]))%26
+                indice = (self.position_alphabet(self.message[i]) - self.position_alphabet(self.cle[cpt]))%26
                 resultat += self.ALPHABET[indice]
+                cpt += 1
             else :
                 resultat = resultat + self.message[i]
         return resultat
@@ -88,23 +98,28 @@ class Hill:
         c = self.matrice_cle[1][0]
         d = self.matrice_cle[1][1]
         determinant = a*d-b*c
-        if type(a)!=int or type(b)!=int or type(c)!=int or type(d)!=int or a<0 or b<0 or c<0 or d<0:
-            return False
+        if a<0 or b<0 or c<0 or d<0:
+            return False    # La matrice clé ne peut être composée que de nombres positifs
+        if type(a)!=int or type(b)!=int or type(c)!=int or type(d)!=int: 
+            return False    # La matrice clé ne peut être composée que d'entiers
         if gcd(determinant,26)!=1:
-            return False
+            return False    # Le déterminant de la matrice n'est pas premier avec 26
         inverse_det = None
         for i in range(1,26,2):
             if (determinant*i)%26 == 1:
                 inverse_det = i
         if inverse_det == None:
-            return False
+            return False    # Cette matrice ne peut pas être inversée
         return(inverse_det)
   
     def encrypt(self)->str:
         """Crypte un message en Hill."""
         if self.verif_matrice_cle()==False:
             return("Matrice invalide")
-        self.message.replace(" ","")
+        self.message = self.message.replace(" ","")
+        for elt in self.message:
+            if elt not in self.ALPHABET:
+                return("Message à coder invalide : veillez à n'utiliser ni chiffres ni caractères spéciaux")  
         matrice_message=[]
         tab1=[]
         tab2=[]
@@ -127,7 +142,6 @@ class Hill:
         """Décrypte un message chiffré en Hill."""
         if self.verif_matrice_cle()==False:
             return("Matrice invalide")
-        self.message.replace(" ","")
         inverse_det = self.verif_matrice_cle()
         a = (self.matrice_cle[1][1] * inverse_det)%26
         b = (-self.matrice_cle[0][1] * inverse_det)%26
